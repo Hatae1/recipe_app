@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "976519623675",
+    "firebase_url": "https://hardtoselect-122f7.firebaseio.com",
+    "project_id": "hardtoselect-122f7",
+    "storage_bucket": "hardtoselect-122f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976519623675:android:b38976a8fdab4b52d7d15e",
+        "android_client_info": {
+          "package_name": "com.am4app.recipe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976519623675-gbhgmnkoulihs3dn44lecsnj7ueek4h7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDFNvlg40fzzWrytGD2gJ9oXddZoClYTY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "976519623675-gbhgmnkoulihs3dn44lecsnj7ueek4h7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
