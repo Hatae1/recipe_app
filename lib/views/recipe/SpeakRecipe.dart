@@ -37,6 +37,7 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
 
   @override
   void dispose() {
+    flutterTts.stop();
     super.dispose();
   }
 
