@@ -13,6 +13,7 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
   PageController pageController;
   int currentPage = 0;
   Recipe recipe = Recipe();
+  int timerTime = 0;
 
   @override
   void initState() {
@@ -23,6 +24,8 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
         'http://file.okdab.com/recipe/148299332509200128.jpg');
     recipe.addItem(2, '믹서기에 두부 식초 설탕 마요네즈 통깨를 넣고 갈아 두부드레싱을 만들어 준다.',
         'http://file.okdab.com/recipe/148299332509700129.jpg');
+
+    timerTime = recipe.items[0].minute;
 
     pageController = PageController(
       initialPage: 0,
@@ -62,6 +65,9 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
           child: PageView.builder(
             itemCount: recipe.itemCount,
             itemBuilder: (context, index) => recipePage(index),
+            onPageChanged: (index) {
+              timerTime = recipe.items[index].minute;
+            },
           ),
         ),
       ),
