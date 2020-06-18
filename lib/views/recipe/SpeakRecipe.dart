@@ -9,11 +9,14 @@ class SpeakRecipe extends StatefulWidget {
   _SpeakRecipeState createState() => _SpeakRecipeState();
 }
 
-class _SpeakRecipeState extends State<SpeakRecipe> {
+class _SpeakRecipeState extends State<SpeakRecipe>
+    with TickerProviderStateMixin {
   int currentIndex = 0;
   Recipe recipe = Recipe();
   int timerTime = 0;
   FlutterTts flutterTts;
+  AnimationController _controller;
+  int levelClock = 180;
 
   @override
   void initState() {
@@ -29,10 +32,21 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
   }
 
   void speackRecipe() {
-    timerTime = recipe.items[currentIndex].minute;
+    setState(() {
+      timerTime = recipe.items[currentIndex].minute * 60;
+    });
 
     flutterTts = FlutterTts();
     flutterTts.speak(recipe.items[currentIndex].recipeDescription);
+
+    _controller = AnimationController(
+        vsync: this,
+        duration: Duration(
+            seconds:
+                timerTime) // gameData.levelClock is a user entered number elsewhere in the applciation
+        );
+
+    _controller.forward();
   }
 
   @override
@@ -48,11 +62,21 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
           Image.network(recipe.items[index].imageUrl),
           Container(
             padding: EdgeInsets.all(10),
-            child: Text(
-              recipe.items[index].recipeDescription,
-              style: TextStyle(
-                fontSize: 20,
-              ),
+            child: Column(
+              children: [
+                Text(
+                  recipe.items[index].recipeDescription,
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                Countdown(
+                  animation: StepTween(
+                    begin: timerTime, // THIS IS A USER ENTERED NUMBER
+                    end: 0,
+                  ).animate(_controller),
+                ),
+              ],
             ),
           ),
         ],
@@ -64,16 +88,36 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          child: PageView.builder(
-            itemCount: recipe.itemCount,
-            itemBuilder: (context, index) => recipePage(index),
-            onPageChanged: (index) {
-              currentIndex = index;
-              speackRecipe();
-            },
-          ),
+          child: Container(
+        child: PageView.builder(
+          itemCount: recipe.itemCount,
+          itemBuilder: (context, index) => recipePage(index),
+          onPageChanged: (index) {
+            currentIndex = index;
+            speackRecipe();
+          },
         ),
+      )),
+    );
+  }
+}
+
+class Countdown extends AnimatedWidget {
+  Countdown({Key key, this.animation}) : super(key: key, listenable: animation);
+  Animation<int> animation;
+
+  @override
+  build(BuildContext context) {
+    Duration clockTimer = Duration(seconds: animation.value);
+
+    String timerText =
+        '${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
+
+    return Text(
+      "$timerText",
+      style: TextStyle(
+        fontSize: 110,
+        color: Theme.of(context).primaryColor,
       ),
     );
   }
