@@ -72,7 +72,7 @@ class _SpeakRecipeState extends State<SpeakRecipe>
     print('start listen');
     speech.listen(
         onResult: resultListener,
-        listenFor: Duration(seconds: 1000),
+        listenFor: Duration(seconds: 10000),
         localeId: _currentLocaleId,
         onSoundLevelChange: soundLevelListener,
         cancelOnError: false,
@@ -99,6 +99,10 @@ class _SpeakRecipeState extends State<SpeakRecipe>
       print("${result.recognizedWords} - ${result.finalResult}");
       lastWords = "${result.recognizedWords} - ${result.finalResult}";
     });
+
+    if (!speech.isListening) {
+      startListening();
+    }
   }
 
   void soundLevelListener(double level) {
@@ -132,7 +136,15 @@ class _SpeakRecipeState extends State<SpeakRecipe>
     print(selectedVal);
   }
 
-  void speackRecipe() {
+  void speackRecipe() async {
+    if (_controller != null) {
+      _controller.dispose();
+    }
+    setState(() {
+      timerTime = 0;
+    });
+    await Future.delayed(Duration(milliseconds: 1000));
+
     setState(() {
       timerTime = recipe.items[currentIndex].minute * 60;
     });
@@ -172,11 +184,14 @@ class _SpeakRecipeState extends State<SpeakRecipe>
                     fontSize: 20,
                   ),
                 ),
-                Countdown(
-                  animation: StepTween(
-                    begin: timerTime, // THIS IS A USER ENTERED NUMBER
-                    end: 0,
-                  ).animate(_controller),
+                Container(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Countdown(
+                    animation: StepTween(
+                      begin: timerTime, // THIS IS A USER ENTERED NUMBER
+                      end: 0,
+                    ).animate(_controller),
+                  ),
                 ),
               ],
             ),
@@ -215,12 +230,22 @@ class Countdown extends AnimatedWidget {
     String timerText =
         '${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
 
-    return Text(
-      "$timerText",
-      style: TextStyle(
-        fontSize: 110,
-        color: Theme.of(context).primaryColor,
-      ),
+    return Row(
+      children: [
+        Icon(
+          Icons.pause,
+          size: 30,
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Text(
+          "$timerText",
+          style: TextStyle(
+            fontSize: 25,
+          ),
+        ),
+      ],
     );
   }
 }
