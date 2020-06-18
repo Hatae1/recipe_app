@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../models/Recipe.dart';
+import '../../models/Recipe.dart';
+
 class SpeakRecipe extends StatefulWidget {
   static const routeName = '/SpeakRecipe';
   @override
@@ -9,13 +12,20 @@ class SpeakRecipe extends StatefulWidget {
 class _SpeakRecipeState extends State<SpeakRecipe> {
   PageController pageController;
   int currentPage = 0;
+  Recipe recipe = Recipe();
 
   @override
   void initState() {
     super.initState();
+    recipe.addItem(5, '달궈진 팬에 기름을 두르고 옷을 계란물옷을 입힌 동그랑땡을 노릇하게 익혀준다.',
+        'http://file.okdab.com/recipe/148299577271500136.jpg');
+    recipe.addItem(1, '접시에 어린잎 채소를 깔아주고 그 위에 자른 김밥을 올려준다.',
+        'http://file.okdab.com/recipe/148299332509200128.jpg');
+    recipe.addItem(2, '믹서기에 두부 식초 설탕 마요네즈 통깨를 넣고 갈아 두부드레싱을 만들어 준다.',
+        'http://file.okdab.com/recipe/148299332509700129.jpg');
 
     pageController = PageController(
-      initialPage: 1,
+      initialPage: 0,
     );
   }
 
@@ -25,66 +35,33 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
     pageController.dispose();
   }
 
+  Widget recipePage(index) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Image.network(recipe.items[index].imageUrl),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              recipe.items[index].recipeDescription,
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          child: PageView(
-            controller: pageController,
-            children: <Widget>[
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Image.network(
-                        'http://file.okdab.com/recipe/148299577271500136.jpg'),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '달궈진 팬에 기름을 두르고 옷을 계란물옷을 입힌 동그랑땡을 노릇하게 익혀준다.',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Image.network(
-                        'http://file.okdab.com/recipe/148299332509200128.jpg'),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '접시에 어린잎 채소를 깔아주고 그 위에 자른 김밥을 올려준다.',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Image.network(
-                        'http://file.okdab.com/recipe/148299332509700129.jpg'),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '믹서기에 두부 식초 설탕 마요네즈 통깨를 넣고 갈아 두부드레싱을 만들어 준다.',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          child: PageView.builder(
+            itemCount: recipe.itemCount,
+            itemBuilder: (context, index) => recipePage(index),
           ),
         ),
       ),
