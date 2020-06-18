@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 import '../../models/Recipe.dart';
 import '../../models/Recipe.dart';
@@ -14,6 +15,7 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
   int currentPage = 0;
   Recipe recipe = Recipe();
   int timerTime = 0;
+  FlutterTts flutterTts;
 
   @override
   void initState() {
@@ -26,6 +28,9 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
         'http://file.okdab.com/recipe/148299332509700129.jpg');
 
     timerTime = recipe.items[0].minute;
+
+    flutterTts = FlutterTts();
+    flutterTts.speak(recipe.items[0].recipeDescription);
 
     pageController = PageController(
       initialPage: 0,
