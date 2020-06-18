@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 import '../../models/Recipe.dart';
-import '../../models/Recipe.dart';
 
 class SpeakRecipe extends StatefulWidget {
   static const routeName = '/SpeakRecipe';
@@ -11,8 +10,7 @@ class SpeakRecipe extends StatefulWidget {
 }
 
 class _SpeakRecipeState extends State<SpeakRecipe> {
-  PageController pageController;
-  int currentPage = 0;
+  int currentIndex = 0;
   Recipe recipe = Recipe();
   int timerTime = 0;
   FlutterTts flutterTts;
@@ -27,20 +25,19 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
     recipe.addItem(2, '믹서기에 두부 식초 설탕 마요네즈 통깨를 넣고 갈아 두부드레싱을 만들어 준다.',
         'http://file.okdab.com/recipe/148299332509700129.jpg');
 
-    timerTime = recipe.items[0].minute;
+    speackRecipe();
+  }
+
+  void speackRecipe() {
+    timerTime = recipe.items[currentIndex].minute;
 
     flutterTts = FlutterTts();
-    flutterTts.speak(recipe.items[0].recipeDescription);
-
-    pageController = PageController(
-      initialPage: 0,
-    );
+    flutterTts.speak(recipe.items[currentIndex].recipeDescription);
   }
 
   @override
   void dispose() {
     super.dispose();
-    pageController.dispose();
   }
 
   Widget recipePage(index) {
@@ -71,7 +68,8 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
             itemCount: recipe.itemCount,
             itemBuilder: (context, index) => recipePage(index),
             onPageChanged: (index) {
-              timerTime = recipe.items[index].minute;
+              currentIndex = index;
+              speackRecipe();
             },
           ),
         ),
