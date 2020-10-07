@@ -14,15 +14,7 @@ class SpeakRecipe extends StatefulWidget {
   _SpeakRecipeState createState() => _SpeakRecipeState();
 }
 
-class _SpeakRecipeState extends State<SpeakRecipe>
-    with TickerProviderStateMixin {
-  int currentIndex = 0;
-  Recipe recipe = Recipe();
-  int timerTime = 0;
-  FlutterTts flutterTts;
-  AnimationController _controller;
-  int levelClock = 180;
-
+class _SpeakRecipeState extends State<SpeakRecipe> {
   bool _hasSpeech = false;
   double level = 0.0;
   double minSoundLevel = 50000;
@@ -37,16 +29,6 @@ class _SpeakRecipeState extends State<SpeakRecipe>
   @override
   void initState() {
     super.initState();
-    recipe.addItem(5, '달궈진 팬에 기름을 두르고 계란물옷을 입힌 동그랑땡을 노릇하게 익혀준다.',
-        'http://file.okdab.com/recipe/148299577271500136.jpg');
-    recipe.addItem(1, '접시에 어린잎 채소를 깔아주고 그 위에 자른 김밥을 올려준다.',
-        'http://file.okdab.com/recipe/148299332509200128.jpg');
-    recipe.addItem(2, '믹서기에 두부 식초 설탕 마요네즈 통깨를 넣고 갈아 두부드레싱을 만들어 준다.',
-        'http://file.okdab.com/recipe/148299332509700129.jpg');
-
-    speackRecipe();
-    initSpeechState();
-    startListening();
   }
 
   Future<void> initSpeechState() async {
@@ -66,17 +48,168 @@ class _SpeakRecipeState extends State<SpeakRecipe>
     });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Speech to Text Example'),
+        ),
+        body: Column(children: [
+          Center(
+            child: Text(
+              'Speech recognition available',
+              style: TextStyle(fontSize: 22.0),
+            ),
+          ),
+          Container(
+            child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text('Initialize'),
+                      onPressed: _hasSpeech ? null : initSpeechState,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text('Start'),
+                      onPressed: !_hasSpeech || speech.isListening
+                          ? null
+                          : startListening,
+                    ),
+                    FlatButton(
+                      child: Text('Stop'),
+                      onPressed: speech.isListening ? stopListening : null,
+                    ),
+                    FlatButton(
+                      child: Text('Cancel'),
+                      onPressed: speech.isListening ? cancelListening : null,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    DropdownButton(
+                      onChanged: (selectedVal) => _switchLang(selectedVal),
+                      value: _currentLocaleId,
+                      items: _localeNames
+                          .map(
+                            (localeName) => DropdownMenuItem(
+                              value: localeName.localeId,
+                              child: Text(localeName.name),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: Column(
+              children: <Widget>[
+                Center(
+                  child: Text(
+                    'Recognized Words',
+                    style: TextStyle(fontSize: 22.0),
+                  ),
+                ),
+                Expanded(
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        color: Theme.of(context).selectedRowColor,
+                        child: Center(
+                          child: Text(
+                            lastWords,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      Positioned.fill(
+                        bottom: 10,
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: .26,
+                                    spreadRadius: level * 1.5,
+                                    color: Colors.black.withOpacity(.05))
+                              ],
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50)),
+                            ),
+                            child: IconButton(icon: Icon(Icons.mic)),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: <Widget>[
+                Center(
+                  child: Text(
+                    'Error Status',
+                    style: TextStyle(fontSize: 22.0),
+                  ),
+                ),
+                Center(
+                  child: Text(lastError),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            color: Theme.of(context).backgroundColor,
+            child: Center(
+              child: speech.isListening
+                  ? Text(
+                      "I'm listening...",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  : Text(
+                      'Not listening',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+            ),
+          ),
+        ]),
+      ),
+    );
+  }
+
   void startListening() {
     lastWords = "";
     lastError = "";
-    print('start listen');
     speech.listen(
         onResult: resultListener,
-        listenFor: Duration(seconds: 10000),
+        listenFor: Duration(seconds: 10),
         localeId: _currentLocaleId,
         onSoundLevelChange: soundLevelListener,
-        cancelOnError: false,
-        partialResults: true);
+        cancelOnError: true,
+        listenMode: ListenMode.confirmation);
     setState(() {});
   }
 
@@ -96,34 +229,29 @@ class _SpeakRecipeState extends State<SpeakRecipe>
 
   void resultListener(SpeechRecognitionResult result) {
     setState(() {
-      print("${result.recognizedWords} - ${result.finalResult}");
       lastWords = "${result.recognizedWords} - ${result.finalResult}";
     });
-
-    if (!speech.isListening) {
-      startListening();
-    }
   }
 
   void soundLevelListener(double level) {
     minSoundLevel = min(minSoundLevel, level);
     maxSoundLevel = max(maxSoundLevel, level);
-    //print("sound level $level: $minSoundLevel - $maxSoundLevel ");
+    // print("sound level $level: $minSoundLevel - $maxSoundLevel ");
     setState(() {
       this.level = level;
     });
   }
 
   void errorListener(SpeechRecognitionError error) {
-    print("Received error status: $error, listening: ${speech.isListening}");
+    // print("Received error status: $error, listening: ${speech.isListening}");
     setState(() {
       lastError = "${error.errorMsg} - ${error.permanent}";
     });
   }
 
   void statusListener(String status) {
-    print(
-        "Received listener status: $status, listening: ${speech.isListening}");
+    // print(
+    // "Received listener status: $status, listening: ${speech.isListening}");
     setState(() {
       lastStatus = "$status";
     });
@@ -134,118 +262,5 @@ class _SpeakRecipeState extends State<SpeakRecipe>
       _currentLocaleId = selectedVal;
     });
     print(selectedVal);
-  }
-
-  void speackRecipe() async {
-    if (_controller != null) {
-      _controller.dispose();
-    }
-    setState(() {
-      timerTime = 0;
-    });
-    await Future.delayed(Duration(milliseconds: 1000));
-
-    setState(() {
-      timerTime = recipe.items[currentIndex].minute * 60;
-    });
-
-    flutterTts = FlutterTts();
-    //flutterTts.speak(recipe.items[currentIndex].recipeDescription);
-
-    _controller = AnimationController(
-        vsync: this,
-        duration: Duration(
-            seconds:
-                timerTime) // gameData.levelClock is a user entered number elsewhere in the applciation
-        );
-
-    _controller.forward();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    flutterTts.stop();
-    super.dispose();
-  }
-
-  Widget recipePage(index) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Image.network(recipe.items[index].imageUrl),
-          Container(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: [
-                Text(
-                  recipe.items[index].recipeDescription,
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Countdown(
-                    animation: StepTween(
-                      begin: timerTime, // THIS IS A USER ENTERED NUMBER
-                      end: 0,
-                    ).animate(_controller),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Container(
-        child: PageView.builder(
-          itemCount: recipe.itemCount,
-          itemBuilder: (context, index) => recipePage(index),
-          onPageChanged: (index) {
-            currentIndex = index;
-            speackRecipe();
-          },
-        ),
-      )),
-    );
-  }
-}
-
-class Countdown extends AnimatedWidget {
-  Countdown({Key key, this.animation}) : super(key: key, listenable: animation);
-  Animation<int> animation;
-
-  @override
-  build(BuildContext context) {
-    Duration clockTimer = Duration(seconds: animation.value);
-
-    String timerText =
-        '${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
-
-    return Row(
-      children: [
-        Icon(
-          Icons.pause,
-          size: 30,
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        Text(
-          "$timerText",
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-      ],
-    );
   }
 }

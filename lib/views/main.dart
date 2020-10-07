@@ -46,6 +46,45 @@ class MainPage extends StatelessWidget {
                                 width: 60,
                                 height: 60,
                               ),
+                              Text('전체'),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/images/pizza.png',
+                                width: 60,
+                                height: 60,
+                              ),
+                              Text('중식'),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/images/pizza.png',
+                                width: 60,
+                                height: 60,
+                              ),
+                              Text('한식'),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/images/pizza.png',
+                                width: 60,
+                                height: 60,
+                              ),
                               Text('이탈리아'),
                             ],
                           ),
@@ -73,6 +112,19 @@ class MainPage extends StatelessWidget {
                                 height: 60,
                               ),
                               Text('일식'),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/images/pizza.png',
+                                width: 60,
+                                height: 60,
+                              ),
+                              Text('동남아시아'),
                             ],
                           ),
                         ],
