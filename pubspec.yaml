@@ -46,6 +46,7 @@ flutter:
    - assets/images/suyang.png
    - assets/images/pizza.png
    - assets/images/sushi.png
+   - assets/images/photo@2x.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -64,6 +65,11 @@ flutter:
       fonts:
         - asset: assets/fonts/BinggraeMelona.ttf
         - asset: assets/fonts/BinggraeMelona-Bold.ttf
+          weight: 700
+    - family: NaNumSquare
+      fonts:
+        - asset: assets/fonts/NanumSquareR.ttf
+        - asset: assets/fonts/NanumSquareB.ttf
           weight: 700
   #         style: italic
   #   - family: Trajan Pro

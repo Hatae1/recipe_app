@@ -9,30 +9,73 @@ class MainPage extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.all(20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        '오늘의 레시피',
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      Icon(
-                        Icons.search,
-                        size: 30,
-                      ),
-                    ],
-                  ),
-                ),
+                    width: double.infinity,
+                    height: 875,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                      image: AssetImage('assets/images/photo@2x.png'),
+                      fit: BoxFit.cover,
+                    )),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          child: Text.rich(
+                            TextSpan(
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: '오',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18)),
+                                TextSpan(text: '늘의 '),
+                                TextSpan(
+                                    text: '레',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                  text: '시피',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 62,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 30),
+                          alignment: Alignment.topLeft,
+                          child: Text.rich(
+                            TextSpan(
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 26),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: '오요',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(text: '님 '),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
                 SizedBox(height: 20),
                 Container(
+                  padding: EdgeInsets.all(30),
                   height: 100,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
