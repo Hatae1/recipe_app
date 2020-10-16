@@ -17,11 +17,14 @@ class MainPage extends StatelessWidget {
                   width: double.infinity,
                   height: 875,
                   decoration: BoxDecoration(
-                      color: Color.fromRGBO(0, 0, 0, 5),
                       image: DecorationImage(
-                        image: AssetImage('assets/images/photo@2x.png'),
-                        fit: BoxFit.cover,
-                      )),
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(1),
+                      BlendMode.dstOver,
+                    ),
+                    image: AssetImage('assets/images/photo@2x.png'),
+                    fit: BoxFit.cover,
+                  )),
                   child: Column(
                     children: [
                       SizedBox(
@@ -239,201 +242,378 @@ class MainPage extends StatelessWidget {
                         height: 15,
                       ),
                       Container(
-                        padding: EdgeInsets.only(left: 30),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 239,
-                              height: 320,
-                              decoration: BoxDecoration(
-                                  color: Color.fromRGBO(0, 0, 0, 5),
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/main-list1.jpg'),
-                                    fit: BoxFit.cover,
-                                  )),
-                            )
+                        height: 320,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: <Widget>[
+                            SizedBox(
+                              width: 30,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 239,
+                                  height: 320,
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: Image.asset(
+                                          'assets/images/main-list4.jpg',
+                                          width: 239,
+                                          height: 320,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 70,
+                                        left: 15,
+                                        child: Text(
+                                          '모두가 좋아하는',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 36,
+                                        left: 15,
+                                        child: Text(
+                                          '맛있는 소세지',
+                                          style: TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Container(
+                                  width: 239,
+                                  height: 320,
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: Image.asset(
+                                          'assets/images/main-list3.jpg',
+                                          width: 239,
+                                          height: 320,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 70,
+                                        left: 15,
+                                        child: Text(
+                                          '감탄이 절로나오는',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 36,
+                                        left: 15,
+                                        child: Text(
+                                          '맛있는 볶음밥',
+                                          style: TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       )
                     ],
                   ),
                 ),
-                Text(
-                  '오늘 요리는 이거 어때요?',
-                  style: TextStyle(fontSize: 25),
-                ),
-                SizedBox(height: 20),
                 Container(
-                  height: 240,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(DetailRecipe.routeName);
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.network(
-                                'http://file.okdab.com/UserFiles/searching/recipe/131400.jpg',
-                                width: 200,
-                                height: 200,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            '쌀국수',
-                            style: TextStyle(fontSize: 20),
-                          )
-                        ],
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 35,
                       ),
-                      SizedBox(width: 15),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(SpeakRecipe.routeName);
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                'http://file.okdab.com/UserFiles/searching/recipe/000200.jpg',
-                                width: 200,
-                                height: 200,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                      Container(
+                        padding: EdgeInsets.only(
+                          left: 30,
+                        ),
+                        child: Text(
+                          '쉐프의 팁',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Color(0xFF003234),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        height: 144,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
                             SizedBox(
-                              height: 10,
+                              width: 30,
                             ),
-                            Text(
-                              '나물비빔밥',
-                              style: TextStyle(fontSize: 20),
+                            Container(
+                              width: 326,
+                              height: 144,
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    width: 295,
+                                    height: 144,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10),
+                                          bottomLeft: Radius.circular(10),
+                                          bottomRight: Radius.circular(10)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 5,
+                                          blurRadius: 7,
+                                          offset: Offset(0,
+                                              3), // changes position of shadow
+                                        ),
+                                      ],
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                            left: 24,
+                                            top: 21,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '오민식 쉐프',
+                                                style: TextStyle(
+                                                  color: Color(0xFF454F63),
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                '곶감치즈말이',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xFF454F63),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Container(
+                                                width: 166,
+                                                child: Text(
+                                                  '곶감 속에 크림 치즈를 쏙 넣어 돌돌 말아내면 와인과 잘 어울리는 근사한 술안주가 된답니다.',
+                                                  style: TextStyle(
+                                                    color: Color(0xFF454F63),
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    top: 11,
+                                    child: Image.asset(
+                                      'assets/images/tomato.png',
+                                      width: 120,
+                                      height: 120,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             )
                           ],
                         ),
                       ),
-                      SizedBox(width: 15),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              'http://file.okdab.com/recipe/148291043686100008.jpg',
-                              width: 200,
-                              height: 200,
-                              fit: BoxFit.cover,
+                      SizedBox(
+                        height: 70,
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(
+                          left: 30,
+                        ),
+                        child: Text(
+                          '인기있는 레시피',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Color(0xFF003234),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        height: 145,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: <Widget>[
+                            SizedBox(
+                              width: 30,
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            '식빵고구마파이',
-                            style: TextStyle(fontSize: 20),
-                          )
-                        ],
+                            Row(
+                              children: [
+                                Container(
+                                  width: 145,
+                                  height: 189,
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: Image.asset(
+                                          'assets/images/main-list4.jpg',
+                                          width: 145,
+                                          height: 189,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 15,
+                                        left: 15,
+                                        child: Text(
+                                          '소세지',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 36,
+                                        left: 15,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              '4.6',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFFFFAA00),
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.star,
+                                              size: 12,
+                                              color: Color(0xFFFFAA00),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Container(
+                                  width: 145,
+                                  height: 189,
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: Image.asset(
+                                          'assets/images/main-list3.jpg',
+                                          width: 145,
+                                          height: 189,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 15,
+                                        left: 15,
+                                        child: Text(
+                                          '소세지',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 36,
+                                        left: 15,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              '4.6',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFFFFAA00),
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.star,
+                                              size: 12,
+                                              color: Color(0xFFFFAA00),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
                       ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  '인기 레시피',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 200,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.network(
-                              'http://file.okdab.com/recipe/147729991660000012.jpg',
-                              width: 150,
-                              height: 150,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            '매운가지볶음',
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
-                      ),
-                      SizedBox(width: 15),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              'http://file.okdab.com/recipe/147433913098400906.jpg',
-                              width: 150,
-                              height: 150,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            '바질페스토 스파게티',
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
-                      ),
-                      SizedBox(width: 15),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              'http://file.okdab.com/UserFiles/searching/recipe/163900.jpg',
-                              width: 150,
-                              height: 150,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            '미소된장국',
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                )
               ],
             ),
           ),

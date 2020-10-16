@@ -54,6 +54,9 @@ flutter:
    - assets/images/menu/menu4.png
    - assets/images/main-list1.jpg
    - assets/images/main-list2.jpg
+   - assets/images/main-list3.jpg
+   - assets/images/main-list4.jpg
+   - assets/images/tomato.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
