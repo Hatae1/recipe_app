@@ -147,13 +147,18 @@ class MainPage extends StatelessWidget {
                             height: 40,
                           ),
                           Container(
-                            padding: EdgeInsets.all(30),
                             height: 170,
+                            padding: EdgeInsets.only(
+                              top: 30,
+                            ),
                             child: ListView(
                               scrollDirection: Axis.horizontal,
                               children: <Widget>[
                                 Row(
                                   children: <Widget>[
+                                    SizedBox(
+                                      width: 30,
+                                    ),
                                     Column(
                                       children: <Widget>[
                                         Image.asset(
