@@ -276,69 +276,76 @@ class MainPage extends StatelessWidget {
                                 ),
                                 Row(
                                   children: [
-                                    Container(
-                                      width: 239,
-                                      height: 320,
-                                      child: Stack(
-                                        children: [
-                                          Positioned(
-                                            top: 0,
-                                            left: 0,
-                                            child: Container(
-                                              width: 239,
-                                              height: 320,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                    'assets/images/main-list4.jpg',
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
+                                    InkWell(
+                                      onTap: () => {
+                                        Navigator.pushNamed(
+                                            context, '/DetailRecipe')
+                                      },
+                                      child: Container(
+                                        width: 239,
+                                        height: 320,
+                                        child: Stack(
+                                          children: [
+                                            Positioned(
+                                              top: 0,
+                                              left: 0,
                                               child: Container(
+                                                width: 239,
+                                                height: 320,
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(20),
-                                                  gradient: LinearGradient(
-                                                      colors: [
-                                                        Colors.transparent,
-                                                        Colors.black
-                                                            .withOpacity(0.7),
-                                                      ],
-                                                      begin:
-                                                          Alignment(0.1, 0.2),
-                                                      end: Alignment
-                                                          .bottomCenter),
+                                                  image: DecorationImage(
+                                                    image: AssetImage(
+                                                      'assets/images/main-list4.jpg',
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    gradient: LinearGradient(
+                                                        colors: [
+                                                          Colors.transparent,
+                                                          Colors.black
+                                                              .withOpacity(0.7),
+                                                        ],
+                                                        begin:
+                                                            Alignment(0.1, 0.2),
+                                                        end: Alignment
+                                                            .bottomCenter),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          Positioned(
-                                            bottom: 70,
-                                            left: 15,
-                                            child: Text(
-                                              '모두가 좋아하는',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.white,
+                                            Positioned(
+                                              bottom: 70,
+                                              left: 15,
+                                              child: Text(
+                                                '모두가 좋아하는',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Positioned(
-                                            bottom: 36,
-                                            left: 15,
-                                            child: Text(
-                                              '맛있는 소세지',
-                                              style: TextStyle(
-                                                fontSize: 22,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
+                                            Positioned(
+                                              bottom: 36,
+                                              left: 15,
+                                              child: Text(
+                                                '맛있는 소세지',
+                                                style: TextStyle(
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     SizedBox(

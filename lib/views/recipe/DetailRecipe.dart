@@ -14,13 +14,12 @@ class _DetailRecipeState extends State<DetailRecipe> {
         child: SingleChildScrollView(
           child: Container(
             color: Colors.white,
-            height: MediaQuery.of(context).size.height + 240,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  child: Stack(
+                  child: Column(
                     children: <Widget>[
                       Image.network(
                         'http://file.okdab.com/UserFiles/searching/recipe/131400.jpg',
@@ -28,153 +27,242 @@ class _DetailRecipeState extends State<DetailRecipe> {
                         height: 400,
                         fit: BoxFit.cover,
                       ),
-                      Positioned(
-                        left: 0,
-                        bottom: 0,
-                        width: MediaQuery.of(context).size.width,
-                        child: Container(
-                          padding: EdgeInsets.only(top: 10, left: 20),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: new BorderRadius.only(
-                              topLeft: const Radius.circular(20.0),
-                              topRight: const Radius.circular(20.0),
+                      Container(
+                        padding: EdgeInsets.all(30),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: new BorderRadius.only(
+                            topLeft: const Radius.circular(20.0),
+                            topRight: const Radius.circular(20.0),
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Image.asset('assets/images/avatar@2x.png',
+                                    width: 36, height: 36),
+                                SizedBox(width: 10),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '김벳남 요리왕국',
+                                      style: TextStyle(
+                                          color: Color(0xFF454F63),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      '베트남 요리 전문가',
+                                      style: TextStyle(
+                                        color: Color(0xFF454F63),
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ),
-                          child: Text(
-                            '쌀국수',
-                            style: TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.bold),
-                          ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              '따뜻한 밥과 함께해도 맛있고, 피로를 풀어주는 반주와 즐겨도 좋은 메뉴~ 고추장 제육볶음 이랍니다. 돼지고기를 활용해 온 가족이 즐기기에도 부담 없는데요. 레시피를 따라 맛있는 제육볶음을 완성해보세요.',
+                              style: TextStyle(
+                                height: 2,
+                                color: Color(0xFF333333),
+                                fontSize: 12,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 30),
+                              height: 1,
+                              color: Color(0xFFFFAA00),
+                            )
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.timer,
-                                  size: 30,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  '60min',
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Text('Kcal',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  '543',
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.fastfood,
-                                  size: 30,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  '양식',
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.restaurant_menu,
-                                  size: 30,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  '쉬움',
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
                       Text(
                         '재료',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 15,
                       ),
-                      Text(
-                        '계란 5개, 전분 1/2T, 부침가루 1/2T, 배추 2잎, 호박 1/2개, 대파 1대',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '계란',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '5개',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '전분',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '1/2T',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '부침가루',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '1/2T',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '배추',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '2잎',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '호박',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '1/2개',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '대파',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '1대',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Image.asset('assets/images/recipe1.png'),
+                      Container(
+                        margin: EdgeInsets.only(top: 30),
+                        height: 1,
+                        color: Color(0xFFFFAA00),
                       ),
                       SizedBox(
                         height: 30,
                       ),
                       Text(
-                        '레시피 과정',
+                        '레시피과정',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 15,
                       ),
                       Text(
-                        '분량의 쇠고기육수 재료를 넣고 푹 삶아 육수를 만든다.',
+                        'STEP1',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 16,
+                          color: Color(0xFFFFAA00),
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 10,
                       ),
-                      Image.network(
-                          'http://file.okdab.com/UserFiles/searching/recipe/131400_p01.jpg'),
+                      Text(
+                        '돼지고기는 먹기 좋은 크기로 자르고, 양파와 깻잎은 채를 썰어주세요. 대파와 청양고추, 홍고추는 어슷하게 썰어주세요.',
+                        style: TextStyle(
+                          height: 2,
+                          color: Color(0xFF333333),
+                          fontSize: 12,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Image.asset('assets/images/recipe2.png'),
                     ],
                   ),
                 ),
