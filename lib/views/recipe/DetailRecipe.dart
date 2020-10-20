@@ -10,6 +10,13 @@ class _DetailRecipeState extends State<DetailRecipe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pushNamed(context, '/SpeakRecipe');
+        },
+        label: Text('레시피 크게보기'),
+        backgroundColor: Color(0xFFFFAA00),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -77,7 +84,7 @@ class _DetailRecipeState extends State<DetailRecipe> {
                               style: TextStyle(
                                 height: 2,
                                 color: Color(0xFF333333),
-                                fontSize: 12,
+                                fontSize: 14,
                               ),
                             ),
                             Container(
@@ -256,7 +263,7 @@ class _DetailRecipeState extends State<DetailRecipe> {
                         style: TextStyle(
                           height: 2,
                           color: Color(0xFF333333),
-                          fontSize: 12,
+                          fontSize: 14,
                         ),
                       ),
                       SizedBox(
