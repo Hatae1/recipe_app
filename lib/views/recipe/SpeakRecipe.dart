@@ -25,6 +25,9 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
   List<LocaleName> _localeNames = [];
   final SpeechToText speech = SpeechToText();
   Recipe recipe = Recipe();
+  final PageController pageController = PageController(
+    initialPage: 0,
+  );
 
   @override
   void initState() {
@@ -93,10 +96,21 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            pageController.nextPage(
+              duration: kTabScrollDuration,
+              curve: Curves.ease,
+            );
+          },
+          label: Text('레시피 크게보기'),
+          backgroundColor: Color(0xFFFFAA00),
+        ),
         body: SafeArea(
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 20),
             child: PageView.builder(
+              controller: pageController,
               itemCount: recipe.itemCount,
               itemBuilder: (context, index) => recipePage(index),
               onPageChanged: (index) {
@@ -114,7 +128,7 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
     lastError = "";
     speech.listen(
         onResult: resultListener,
-        listenFor: Duration(seconds: 10),
+        listenFor: Duration(seconds: 1000),
         localeId: _currentLocaleId,
         onSoundLevelChange: soundLevelListener,
         cancelOnError: true,
@@ -140,6 +154,22 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
     setState(() {
       lastWords = "${result.recognizedWords} - ${result.finalResult}";
     });
+
+    print(result.recognizedWords);
+
+    if (result.recognizedWords == '다음') {
+      pageController.nextPage(
+        duration: kTabScrollDuration,
+        curve: Curves.ease,
+      );
+    }
+
+    if (result.recognizedWords == '이전') {
+      pageController.previousPage(
+        duration: kTabScrollDuration,
+        curve: Curves.ease,
+      );
+    }
 
     startListening();
   }
