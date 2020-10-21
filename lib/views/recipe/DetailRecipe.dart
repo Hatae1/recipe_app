@@ -28,8 +28,8 @@ class _DetailRecipeState extends State<DetailRecipe> {
                 Container(
                   child: Column(
                     children: <Widget>[
-                      Image.network(
-                        'http://file.okdab.com/UserFiles/searching/recipe/131400.jpg',
+                      Image.asset(
+                        'assets/images/detail.jpg',
                         width: double.infinity,
                         height: 400,
                         fit: BoxFit.cover,
