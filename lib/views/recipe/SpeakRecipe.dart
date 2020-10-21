@@ -62,8 +62,10 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
             child: Stack(
               children: [
                 Positioned(
-                    top: 10,
-                    left: 10,
+                    top: ((index + 1) % 2 == 1) ? 10 : null,
+                    left: ((index + 1) % 2 == 1) ? 10 : null,
+                    right: ((index + 1) % 2 == 1) ? null : 10,
+                    bottom: ((index + 1) % 2 == 1) ? null : 10,
                     child: Container(
                       width: 270,
                       child: Column(
@@ -84,7 +86,7 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'STEP1',
+                                  'STEP${index + 1}',
                                   style: TextStyle(
                                       color: Color(0xFFFFAA00),
                                       fontSize: 16,
@@ -109,91 +111,6 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
               ],
             ),
           ),
-          Container(
-            height: 182,
-            decoration: BoxDecoration(
-              color: Color(0xFFFFAA00),
-            ),
-            child: Container(
-              padding: EdgeInsets.only(top: 30, left: 30, right: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Image.asset('assets/images/avatar@2x.png',
-                          width: 36, height: 36),
-                      SizedBox(width: 10),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '김벳남 요리왕국',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            '베트남 요리 전문가',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    child: Slider(
-                      value: 50,
-                      min: 0,
-                      max: 100,
-                      activeColor: Colors.white,
-                      inactiveColor: Color(0xFFF5C663),
-                      onChanged: (double value) {},
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 50, right: 50),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(
-                          Icons.fast_rewind_outlined,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                        Icon(
-                          Icons.play_arrow_outlined,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                        Icon(
-                          Icons.fast_forward_outlined,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
         ],
       ),
     );
@@ -220,26 +137,108 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            pageController.nextPage(
-              duration: kTabScrollDuration,
-              curve: Curves.ease,
-            );
-          },
-          child: speech.isListening ? Icon(Icons.mic) : Icon(Icons.mic_off),
-          backgroundColor: Color(0xFFFFAA00),
-        ),
         body: SafeArea(
-          child: Container(
-            child: PageView.builder(
-              controller: pageController,
-              itemCount: recipe.itemCount,
-              itemBuilder: (context, index) => recipePage(index),
-              onPageChanged: (index) {
-                currentIndex = index;
-              },
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height - 24 - 182,
+                child: PageView.builder(
+                  controller: pageController,
+                  itemCount: recipe.itemCount,
+                  itemBuilder: (context, index) => recipePage(index),
+                  onPageChanged: (index) {
+                    currentIndex = index;
+                  },
+                ),
+              ),
+              Container(
+                height: 182,
+                decoration: BoxDecoration(
+                  color: Color(0xFFFFAA00),
+                ),
+                child: Container(
+                  padding: EdgeInsets.only(top: 30, left: 30, right: 30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset('assets/images/avatar@2x.png',
+                              width: 36, height: 36),
+                          SizedBox(width: 10),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '김벳남 요리왕국',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                '베트남 요리 전문가',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        child: Slider(
+                          value: 50,
+                          min: 0,
+                          max: 100,
+                          activeColor: Colors.white,
+                          inactiveColor: Color(0xFFF5C663),
+                          onChanged: (double value) {},
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 50, right: 50),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(
+                              Icons.fast_rewind_outlined,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            Icon(
+                              Icons.play_arrow_outlined,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            Icon(
+                              Icons.fast_forward_outlined,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),
