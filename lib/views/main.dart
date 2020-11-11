@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:recipe/views/recipe/DetailRecipe.dart';
-import 'package:recipe/views/recipe/SpeakRecipe.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  CollectionReference recipeList =
+      FirebaseFirestore.instance.collection('recipeInformation');
+
   @override
   Widget build(BuildContext context) {
+    recipeList.doc();
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

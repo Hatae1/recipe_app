@@ -24,6 +24,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+  firebase_core: ^0.5.2
+  cloud_firestore: ^0.14.3
 
 dev_dependencies:
   flutter_test:
@@ -77,11 +79,6 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Bingre
-      fonts:
-        - asset: assets/fonts/BinggraeMelona.ttf
-        - asset: assets/fonts/BinggraeMelona-Bold.ttf
-          weight: 700
     - family: NaNumSquare
       fonts:
         - asset: assets/fonts/NanumSquareL.ttf
