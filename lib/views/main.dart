@@ -12,7 +12,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    recipeList.doc();
+    recipeList.doc().get().then((value) => print(value));
 
     return Scaffold(
       body: SafeArea(
