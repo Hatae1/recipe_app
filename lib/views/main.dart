@@ -12,8 +12,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    recipeList.doc().get().then((value) => print(value));
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -565,7 +563,7 @@ class _MainPageState extends State<MainPage> {
                           left: 30,
                         ),
                         child: Text(
-                          '인기있는 레시피',
+                          '안기있는 레시피',
                           style: TextStyle(
                             fontSize: 20,
                             color: Color(0xFF003234),
@@ -577,209 +575,164 @@ class _MainPageState extends State<MainPage> {
                         height: 15,
                       ),
                       Container(
-                        height: 145,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: <Widget>[
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  width: 145,
-                                  height: 145,
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                        left: 0,
-                                        top: 0,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(20),
-                                              ),
-                                              image: DecorationImage(
-                                                image: AssetImage(
-                                                    'assets/images/main-list5.jpg'),
-                                                fit: BoxFit.cover,
-                                              )),
-                                          child: Container(
-                                            width: 145,
-                                            height: 145,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(20),
-                                              ),
-                                              gradient: LinearGradient(
-                                                  colors: [
-                                                    Colors.black
-                                                        .withOpacity(0.8),
-                                                    Colors.transparent
-                                                  ],
-                                                  begin: Alignment.topCenter,
-                                                  stops: [
-                                                    0.21,
-                                                    0.7,
-                                                  ],
-                                                  end: Alignment.bottomCenter),
-                                            ),
-                                          ),
+                          height: 145,
+                          child: StreamBuilder<QuerySnapshot>(
+                            stream: recipeList.snapshots(),
+                            builder: (context, stream) {
+                              if (stream.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+
+                              if (stream.hasError) {
+                                return Center(
+                                    child: Text(stream.error.toString()));
+                              }
+
+                              QuerySnapshot querySnapshot = stream.data;
+
+                              return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 10,
+                                itemBuilder: (context, index) => Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () => {
+                                        Navigator.pushNamed(
+                                            context, '/DetailRecipe',
+                                            arguments:
+                                                querySnapshot.docs[index].id)
+                                      },
+                                      child: Container(
+                                        width: 145,
+                                        height: 145,
+                                        margin: EdgeInsets.only(
+                                          right: 20,
+                                          left: (index == 0 ? 30 : 0),
                                         ),
-                                      ),
-                                      Positioned(
-                                        top: 15,
-                                        left: 15,
-                                        child: Text(
-                                          '소세지',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        top: 36,
-                                        left: 15,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                        child: Stack(
                                           children: [
-                                            Text(
-                                              '4.6',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xFFFFAA00),
+                                            Positioned(
+                                              left: 0,
+                                              top: 0,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(20),
+                                                    ),
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          querySnapshot
+                                                                  .docs[index]
+                                                              ['IMG_URL']),
+                                                      fit: BoxFit.cover,
+                                                    )),
+                                                child: Container(
+                                                  width: 145,
+                                                  height: 145,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(20),
+                                                    ),
+                                                    gradient: LinearGradient(
+                                                        colors: [
+                                                          Colors.black
+                                                              .withOpacity(0.5),
+                                                          Colors.transparent
+                                                        ],
+                                                        begin:
+                                                            Alignment.topCenter,
+                                                        stops: [
+                                                          0.21,
+                                                          0.7,
+                                                        ],
+                                                        end: Alignment
+                                                            .bottomCenter),
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                            Icon(
-                                              Icons.star,
-                                              size: 12,
-                                              color: Color(0xFFFFAA00),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Positioned(
-                                        left: 0,
-                                        top: 0,
-                                        child: Container(
-                                          width: 145,
-                                          height: 145,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(20),
-                                                topRight: Radius.circular(20),
+                                            Positioned(
+                                              top: 15,
+                                              left: 15,
+                                              child: Text(
+                                                querySnapshot.docs[index]
+                                                    ['RECIPE_NM_KO'],
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  Colors.black
-                                                      .withOpacity(0.20),
-                                                  Colors.black.withOpacity(0)
+                                            ),
+                                            Positioned(
+                                              top: 36,
+                                              left: 15,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    '4.6',
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Color(0xFFFFAA00),
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons.star,
+                                                    size: 12,
+                                                    color: Color(0xFFFFAA00),
+                                                  )
                                                 ],
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
-                                              )),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Container(
-                                  width: 145,
-                                  height: 145,
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                        left: 0,
-                                        top: 0,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(20),
-                                              ),
-                                              image: DecorationImage(
-                                                image: AssetImage(
-                                                    'assets/images/main-list3.jpg'),
-                                                fit: BoxFit.cover,
-                                              )),
-                                          child: Container(
-                                            width: 145,
-                                            height: 145,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(20),
-                                              ),
-                                              gradient: LinearGradient(
-                                                  colors: [
-                                                    Colors.black
-                                                        .withOpacity(0.8),
-                                                    Colors.transparent
-                                                  ],
-                                                  begin: Alignment.topCenter,
-                                                  stops: [
-                                                    0.21,
-                                                    0.7,
-                                                  ],
-                                                  end: Alignment.bottomCenter),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        top: 15,
-                                        left: 15,
-                                        child: Text(
-                                          '티라미수',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        top: 36,
-                                        left: 15,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              '4.6',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xFFFFAA00),
                                               ),
                                             ),
-                                            Icon(
-                                              Icons.star,
-                                              size: 12,
-                                              color: Color(0xFFFFAA00),
-                                            )
+                                            Positioned(
+                                              left: 0,
+                                              top: 0,
+                                              child: Container(
+                                                width: 145,
+                                                height: 145,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(20),
+                                                      topRight:
+                                                          Radius.circular(20),
+                                                    ),
+                                                    gradient: LinearGradient(
+                                                      colors: [
+                                                        Colors.black
+                                                            .withOpacity(0.20),
+                                                        Colors.black
+                                                            .withOpacity(0)
+                                                      ],
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter,
+                                                    )),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                              );
+                            },
+                          )),
                       SizedBox(
-                        height: 15,
+                        height: 70,
                       ),
                     ],
                   ),

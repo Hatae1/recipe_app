@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class DetailRecipe extends StatefulWidget {
@@ -7,8 +8,17 @@ class DetailRecipe extends StatefulWidget {
 }
 
 class _DetailRecipeState extends State<DetailRecipe> {
+  CollectionReference recipeInfo =
+      FirebaseFirestore.instance.collection('recipeInformation');
+
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context).settings.arguments;
+
+    recipeInfo.doc(args).get().then((DocumentSnapshot documentSnapshot) {
+      print(documentSnapshot.get('IMG_URL'));
+    });
+
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
