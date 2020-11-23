@@ -42,9 +42,17 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
         '볼에 양념재료를 넣어 섞은 후, 돼지고기를 넣고 주물러서 먼저 양념하고 양파와 대파를 더해 섞어 20분 정도 양념장에 재워주세요.',
         'assets/images/speak_2.jpg');
 
+    recipe.addItem(
+        4,
+        '볼에 양념재료를 넣어 섞은 후, 돼지고기를 넣고 주물러서 먼저 양념하고 양파와 대파를 더해 섞어 20분 정도 양념장에 재워주세요.',
+        'assets/images/speak_2.jpg');
     initSpeechState();
-    startListening();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Widget recipePage(index) {
@@ -119,6 +127,7 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
   Future<void> initSpeechState() async {
     bool hasSpeech = await speech.initialize(
         onError: errorListener, onStatus: statusListener);
+
     if (hasSpeech) {
       _localeNames = await speech.locales();
 
@@ -137,6 +146,13 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            speech.isListening ? null : startListening();
+          },
+          child: speech.isListening ? Icon(Icons.mic) : Icon(Icons.mic_off),
+          backgroundColor: Colors.green,
+        ),
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -246,6 +262,7 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
   }
 
   void startListening() {
+    print('start');
     lastWords = "";
     lastError = "";
     speech.listen(
@@ -275,6 +292,7 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
   void resultListener(SpeechRecognitionResult result) {
     setState(() {
       lastWords = "${result.recognizedWords} - ${result.finalResult}";
+      print("setState ${lastWords}");
     });
 
     print(result.recognizedWords);
@@ -292,8 +310,6 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
         curve: Curves.ease,
       );
     }
-
-    startListening();
   }
 
   void soundLevelListener(double level) {
@@ -306,15 +322,15 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
   }
 
   void errorListener(SpeechRecognitionError error) {
-    // print("Received error status: $error, listening: ${speech.isListening}");
+    print("Received error status: $error, listening: ${speech.isListening}");
     setState(() {
       lastError = "${error.errorMsg} - ${error.permanent}";
     });
   }
 
   void statusListener(String status) {
-    // print(
-    // "Received listener status: $status, listening: ${speech.isListening}");
+    print(
+        "Received listener status: $status, listening: ${speech.isListening}");
     setState(() {
       lastStatus = "$status";
     });

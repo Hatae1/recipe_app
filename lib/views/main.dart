@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:recipe/views/recipe/DetailRecipe.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -599,10 +600,11 @@ class _MainPageState extends State<MainPage> {
                                   children: [
                                     InkWell(
                                       onTap: () => {
-                                        Navigator.pushNamed(
-                                            context, '/DetailRecipe',
-                                            arguments:
-                                                querySnapshot.docs[index].id)
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(builder: (_) {
+                                          return DetailRecipe(
+                                              querySnapshot.docs[index].id);
+                                        }))
                                       },
                                       child: Container(
                                         width: 145,
