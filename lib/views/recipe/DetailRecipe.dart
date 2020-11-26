@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:recipe/views/recipe/SpeakRecipe.dart';
 
 class DetailRecipe extends StatefulWidget {
   static const routeName = '/DetailRecipe';
@@ -12,6 +13,7 @@ class DetailRecipe extends StatefulWidget {
   List<Map<String, dynamic>> recipeItemInfo = [];
 
   String recipeImage;
+  int recipeId;
 
   @override
   _DetailRecipeState createState() => _DetailRecipeState();
@@ -19,7 +21,6 @@ class DetailRecipe extends StatefulWidget {
 
 class _DetailRecipeState extends State<DetailRecipe> {
   Future<void> getRecipeInfo() async {
-    int recipeId;
     String recipeSummary;
 
     CollectionReference recipeInfo =
@@ -31,7 +32,7 @@ class _DetailRecipeState extends State<DetailRecipe> {
     CollectionReference recipeItemInfo =
         FirebaseFirestore.instance.collection('recipeItemInfo');
 
-    recipeId = await recipeInfo
+    widget.recipeId = await recipeInfo
         .doc(widget._recipeRowId)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
@@ -41,7 +42,7 @@ class _DetailRecipeState extends State<DetailRecipe> {
     });
 
     await recipeCookInformation
-        .where('RECIPE_ID', isEqualTo: recipeId)
+        .where('RECIPE_ID', isEqualTo: widget.recipeId)
         .get()
         .then((value) => {
               for (int i = 0; i < value.size; i++)
@@ -54,7 +55,7 @@ class _DetailRecipeState extends State<DetailRecipe> {
             });
 
     await recipeItemInfo
-        .where('RECIPE_ID', isEqualTo: recipeId)
+        .where('RECIPE_ID', isEqualTo: widget.recipeId)
         .get()
         .then((value) => {
               for (int i = 0; i < value.size; i++)
@@ -144,9 +145,11 @@ class _DetailRecipeState extends State<DetailRecipe> {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.pushNamed(context, '/SpeakRecipe');
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+            return SpeakRecipe(widget.recipeId);
+          }));
         },
-        label: Text('레시피 크게보기'),
+        label: Text('요리모드'),
         backgroundColor: Color(0xFFFFAA00),
       ),
       body: SafeArea(
@@ -204,7 +207,7 @@ class _DetailRecipeState extends State<DetailRecipe> {
                                             height: 5,
                                           ),
                                           Text(
-                                            '베트남 요리 전문가',
+                                            '자취요리 전문가',
                                             style: TextStyle(
                                               color: Color(0xFF454F63),
                                               fontSize: 12,

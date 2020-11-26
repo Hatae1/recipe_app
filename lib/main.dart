@@ -22,7 +22,6 @@ class MyApp extends StatelessWidget {
         fontFamily: "NaNumSquare",
       ),
       home: MainPage(),
-      routes: {SpeakRecipe.routeName: (ctx) => SpeakRecipe()},
     );
   }
 }
