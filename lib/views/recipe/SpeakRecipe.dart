@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../models/Recipe.dart';
 
@@ -6,11 +7,33 @@ class SpeakRecipe extends StatefulWidget {
   int recipeId;
 
   SpeakRecipe(this.recipeId);
+  List<Map<String, dynamic>> recipeCookInfo = [];
+
   @override
   _SpeakRecipeState createState() => _SpeakRecipeState();
 }
 
 class _SpeakRecipeState extends State<SpeakRecipe> {
+  Future<void> getRecipeInfo() async {
+    CollectionReference recipeCookInformation =
+        FirebaseFirestore.instance.collection('recipeCookInformation');
+
+    await recipeCookInformation
+        .where('RECIPE_ID', isEqualTo: widget.recipeId)
+        .get()
+        .then((value) => {
+              for (int i = 0; i < value.size; i++)
+                {
+                  widget.recipeCookInfo.add({
+                    'COOKING_DC': value.docs[i].get('COOKING_DC'),
+                    'IMG_URL': value.docs[i].get('STRE_STEP_IMAGE_URL')
+                  })
+                }
+            });
+
+    setState(() {});
+  }
+
   int currentIndex = 0;
 
   Recipe recipe = Recipe();
@@ -20,20 +43,14 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
 
   @override
   void initState() {
-    recipe.addItem(
-        5,
-        '돼지고기는 먹기 좋은 크기로 자르고, 양파와 깻잎은 채를 썰어주세요. 대파와 청양고추, 홍고추는 어슷하게 썰어주세요.',
-        'assets/images/speak_1.jpg');
+    getRecipeInfo().then((value) => {
+          for (int i = 0; i < widget.recipeCookInfo.length; i++)
+            {
+              recipe.addItem(5, widget.recipeCookInfo[i]['COOKING_DC'],
+                  widget.recipeCookInfo[i]['IMG_URL'])
+            }
+        });
 
-    recipe.addItem(
-        4,
-        '볼에 양념재료를 넣어 섞은 후, 돼지고기를 넣고 주물러서 먼저 양념하고 양파와 대파를 더해 섞어 20분 정도 양념장에 재워주세요.',
-        'assets/images/speak_2.jpg');
-
-    recipe.addItem(
-        4,
-        '볼에 양념재료를 넣어 섞은 후, 돼지고기를 넣고 주물러서 먼저 양념하고 양파와 대파를 더해 섞어 20분 정도 양념장에 재워주세요.',
-        'assets/images/speak_2.jpg');
     super.initState();
   }
 
@@ -48,12 +65,14 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height - 24 - 182,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(recipe.items[index].imageUrl),
-                fit: BoxFit.cover,
-              ),
-            ),
+            decoration: recipe.items[index].imageUrl != null
+                ? BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(recipe.items[index].imageUrl),
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : BoxDecoration(),
             child: Stack(
               children: [
                 Positioned(
@@ -153,7 +172,7 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '김벳남 요리왕국',
+                                '장금이',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,

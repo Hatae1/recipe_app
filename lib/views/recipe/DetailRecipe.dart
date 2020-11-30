@@ -14,6 +14,7 @@ class DetailRecipe extends StatefulWidget {
 
   String recipeImage;
   int recipeId;
+  String detUrl;
 
   @override
   _DetailRecipeState createState() => _DetailRecipeState();
@@ -38,6 +39,7 @@ class _DetailRecipeState extends State<DetailRecipe> {
         .then((DocumentSnapshot documentSnapshot) {
       recipeSummary = documentSnapshot.get('SUMRY');
       widget.recipeImage = documentSnapshot.get('IMG_URL');
+      widget.detUrl = documentSnapshot.get("DET_URL");
       return documentSnapshot.get('RECIPE_ID');
     });
 
@@ -262,7 +264,12 @@ class _DetailRecipeState extends State<DetailRecipe> {
                             SizedBox(
                               height: 10,
                             ),
-                            Image.asset('assets/images/recipe1.png'),
+                            Image.network(
+                              widget.detUrl,
+                              width: double.infinity,
+                              height: 400,
+                              fit: BoxFit.cover,
+                            ),
                             Container(
                               margin: EdgeInsets.only(top: 30),
                               height: 1,
