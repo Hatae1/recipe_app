@@ -291,6 +291,7 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
   void resultListener(SpeechRecognitionResult result) {
     setState(() {
       lastWords = "${result.recognizedWords} - ${result.finalResult}";
+      stopListening();
       print("setState ${lastWords}");
     });
 
