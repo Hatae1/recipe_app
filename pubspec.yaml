@@ -26,6 +26,7 @@ dependencies:
   firebase_core: ^0.5.2
   cloud_firestore: ^0.14.3
   http: ^0.12.2
+  speech_to_text: ^2.7.0
 
 dev_dependencies:
   flutter_test:

@@ -1,41 +1,29 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:speech_to_text/speech_recognition_error.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import '../../models/Recipe.dart';
 
 class SpeakRecipe extends StatefulWidget {
   static const routeName = '/SpeakRecipe';
-  int recipeId;
-
-  SpeakRecipe(this.recipeId);
-  List<Map<String, dynamic>> recipeCookInfo = [];
-
   @override
   _SpeakRecipeState createState() => _SpeakRecipeState();
 }
 
 class _SpeakRecipeState extends State<SpeakRecipe> {
-  Future<void> getRecipeInfo() async {
-    CollectionReference recipeCookInformation =
-        FirebaseFirestore.instance.collection('recipeCookInformation');
-
-    await recipeCookInformation
-        .where('RECIPE_ID', isEqualTo: widget.recipeId)
-        .get()
-        .then((value) => {
-              for (int i = 0; i < value.size; i++)
-                {
-                  widget.recipeCookInfo.add({
-                    'COOKING_DC': value.docs[i].get('COOKING_DC'),
-                    'IMG_URL': value.docs[i].get('STRE_STEP_IMAGE_URL')
-                  })
-                }
-            });
-
-    setState(() {});
-  }
-
+  bool _hasSpeech = false;
+  double level = 0.0;
+  double minSoundLevel = 50000;
+  double maxSoundLevel = -50000;
+  String lastWords = "";
+  String lastError = "";
+  String lastStatus = "";
+  String _currentLocaleId = "";
   int currentIndex = 0;
-
+  List<LocaleName> _localeNames = [];
+  final SpeechToText speech = SpeechToText();
   Recipe recipe = Recipe();
   final PageController pageController = PageController(
     initialPage: 0,
@@ -43,14 +31,21 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
 
   @override
   void initState() {
-    getRecipeInfo().then((value) => {
-          for (int i = 0; i < widget.recipeCookInfo.length; i++)
-            {
-              recipe.addItem(5, widget.recipeCookInfo[i]['COOKING_DC'],
-                  widget.recipeCookInfo[i]['IMG_URL'])
-            }
-        });
+    recipe.addItem(
+        5,
+        '돼지고기는 먹기 좋은 크기로 자르고, 양파와 깻잎은 채를 썰어주세요. 대파와 청양고추, 홍고추는 어슷하게 썰어주세요.',
+        'assets/images/speak_1.jpg');
 
+    recipe.addItem(
+        4,
+        '볼에 양념재료를 넣어 섞은 후, 돼지고기를 넣고 주물러서 먼저 양념하고 양파와 대파를 더해 섞어 20분 정도 양념장에 재워주세요.',
+        'assets/images/speak_2.jpg');
+
+    recipe.addItem(
+        4,
+        '볼에 양념재료를 넣어 섞은 후, 돼지고기를 넣고 주물러서 먼저 양념하고 양파와 대파를 더해 섞어 20분 정도 양념장에 재워주세요.',
+        'assets/images/speak_2.jpg');
+    initSpeechState();
     super.initState();
   }
 
@@ -65,14 +60,12 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height - 24 - 182,
-            decoration: recipe.items[index].imageUrl != null
-                ? BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(recipe.items[index].imageUrl),
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : BoxDecoration(),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(recipe.items[index].imageUrl),
+                fit: BoxFit.cover,
+              ),
+            ),
             child: Stack(
               children: [
                 Positioned(
@@ -130,10 +123,35 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
     );
   }
 
+  Future<void> initSpeechState() async {
+    bool hasSpeech = await speech.initialize(
+        onError: errorListener, onStatus: statusListener);
+
+    if (hasSpeech) {
+      _localeNames = await speech.locales();
+
+      var systemLocale = await speech.systemLocale();
+      _currentLocaleId = systemLocale.localeId;
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _hasSpeech = hasSpeech;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            speech.isListening ? null : startListening();
+          },
+          child: speech.isListening ? Icon(Icons.mic) : Icon(Icons.mic_off),
+          backgroundColor: Colors.green,
+        ),
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -172,7 +190,7 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '장금이',
+                                '김벳남 요리왕국',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
@@ -240,5 +258,87 @@ class _SpeakRecipeState extends State<SpeakRecipe> {
         ),
       ),
     );
+  }
+
+  void startListening() {
+    print('start');
+    lastWords = "";
+    lastError = "";
+    speech.listen(
+        onResult: resultListener,
+        listenFor: Duration(seconds: 1000),
+        localeId: _currentLocaleId,
+        onSoundLevelChange: soundLevelListener,
+        cancelOnError: true,
+        listenMode: ListenMode.confirmation);
+    setState(() {});
+  }
+
+  void stopListening() {
+    speech.stop();
+    setState(() {
+      level = 0.0;
+    });
+  }
+
+  void cancelListening() {
+    speech.cancel();
+    setState(() {
+      level = 0.0;
+    });
+  }
+
+  void resultListener(SpeechRecognitionResult result) {
+    setState(() {
+      lastWords = "${result.recognizedWords} - ${result.finalResult}";
+      print("setState ${lastWords}");
+    });
+
+    print(result.recognizedWords);
+
+    if (result.recognizedWords == '다음') {
+      pageController.nextPage(
+        duration: kTabScrollDuration,
+        curve: Curves.ease,
+      );
+    }
+
+    if (result.recognizedWords == '이전') {
+      pageController.previousPage(
+        duration: kTabScrollDuration,
+        curve: Curves.ease,
+      );
+    }
+  }
+
+  void soundLevelListener(double level) {
+    minSoundLevel = min(minSoundLevel, level);
+    maxSoundLevel = max(maxSoundLevel, level);
+    // print("sound level $level: $minSoundLevel - $maxSoundLevel ");
+    setState(() {
+      this.level = level;
+    });
+  }
+
+  void errorListener(SpeechRecognitionError error) {
+    print("Received error status: $error, listening: ${speech.isListening}");
+    setState(() {
+      lastError = "${error.errorMsg} - ${error.permanent}";
+    });
+  }
+
+  void statusListener(String status) {
+    print(
+        "Received listener status: $status, listening: ${speech.isListening}");
+    setState(() {
+      lastStatus = "$status";
+    });
+  }
+
+  _switchLang(selectedVal) {
+    setState(() {
+      _currentLocaleId = selectedVal;
+    });
+    print(selectedVal);
   }
 }

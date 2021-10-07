@@ -11,6 +11,10 @@ class _MainPageState extends State<MainPage> {
   CollectionReference recipeList =
       FirebaseFirestore.instance.collection('recipeInformation');
 
+  String getRecipeListUrl =
+      "https://jnk68p6drg.execute-api.ap-northeast-2.amazonaws.com/prod";
+  String imageUrl = "http://d1j03f4o7r6puy.cloudfront.net";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

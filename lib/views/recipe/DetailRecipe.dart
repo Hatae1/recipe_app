@@ -148,7 +148,7 @@ class _DetailRecipeState extends State<DetailRecipe> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-            return SpeakRecipe(widget.recipeId);
+            return SpeakRecipe();
           }));
         },
         label: Text('요리모드'),

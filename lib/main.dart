@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipe/views/recipe/DetailRecipe.dart';
 import 'package:recipe/views/main.dart';
-import 'package:recipe/views/recipe/SpeakRecipe.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
